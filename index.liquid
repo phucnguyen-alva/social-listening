@@ -1,7 +1,65 @@
 ---
 layout: layout.liquid
-title: 11ty Boilerplate
+title: "Social Listening Dashboard"
 ---
 
-<h1>Yet Another 11ty <strong>Boilerplate</strong></h1>
-<img alt="pine" src="/images/pine.png" width="50" />
+<h1 class="text-3xl font-bold text-center mt-6 mb-10">📢 Social Listening Dashboard</h1>
+
+<div x-data="socialDashboard()">
+    <!-- Analysis Controls -->
+    <div class="flex justify-center gap-4 mb-8">
+        <button 
+            @click="findMostFrequentWords()" 
+            class="px-4 py-2 bg-blue-600 hover:bg-blue-700 rounded-lg transition-colors">
+            Analyze Word Frequency
+        </button>
+        <button 
+            @click="detectThemes()" 
+            class="px-4 py-2 bg-green-600 hover:bg-green-700 rounded-lg transition-colors">
+            Analyze Themes
+        </button>
+    </div>
+
+    <!-- Analysis Results (Only Show When Data is Available) -->
+    <div class="mb-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-gray-800 rounded-lg p-6 shadow-lg" x-show="frequentWords !== null">
+            <h2 class="text-xl font-bold mb-4">Frequent Words</h2>
+            <p x-text="frequentWords"></p>
+        </div>
+        <div class="bg-gray-800 rounded-lg p-6 shadow-lg" x-show="themes !== null">
+            <h2 class="text-xl font-bold mb-4">Common Themes</h2>
+            <p x-text="themes"></p>
+        </div>
+    </div>
+
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <!-- Posts Section -->
+        <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+            <h2 class="text-xl font-bold mb-4">Posts</h2>
+            <div class="space-y-4">
+                <template x-for="post in posts" :key="post.id">
+                    <div class="p-4 bg-gray-700 rounded">
+                        <h3 class="font-bold" x-text="post.title"></h3>
+                        <p class="mt-2" x-text="post.body"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+
+        <!-- Comments Section -->
+        <div class="bg-gray-800 rounded-lg p-6 shadow-lg">
+            <h2 class="text-xl font-bold mb-4">Comments</h2>
+            <div class="space-y-4">
+                <template x-for="comment in comments" :key="comment.id">
+                    <div class="p-4 bg-gray-700 rounded">
+                        <p x-text="comment.body"></p>
+                        <p class="mt-2 text-sm text-gray-400" x-text="'User: ' + comment.user.username"></p>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/scripts/dashboard.js"></script>
